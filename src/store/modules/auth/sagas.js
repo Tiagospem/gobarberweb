@@ -4,6 +4,11 @@ import api from '~/services/api';
 import { signInSuccess, signFailure, signUpSuccess } from './actions';
 import history from '~/services/history';
 
+/**
+ * @param payload
+ * use function* with asterisk to
+ * async function and yield as same await
+ */
 export function* signIn({ payload }) {
   try {
     const { email, password } = payload;
@@ -13,6 +18,7 @@ export function* signIn({ payload }) {
       toast.error('Usuário não é prestador');
       return;
     }
+    api.defaults.headers.Authorization = `Bearer ${token}`;
     yield put(signInSuccess(token, user));
     history.push('/dashboard');
   } catch (e) {
@@ -41,7 +47,21 @@ export function* signUp({ payload }) {
   }
 }
 
+/**
+ * @param payload
+ * intercepts saga actions to set
+ * token header to API requests
+ */
+export function setToken({ payload }){
+  if(!payload) return;
+  const {token} = payload.auth;
+  if(token){
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
+}
+
 export default all([
+  takeLatest('persist/REHYDRATE', setToken),
   takeLatest('@auth/SIGN_IN_REQUEST', signIn),
   takeLatest('@auth/SIGN_UP_REQUEST', signUp)
 ]);
