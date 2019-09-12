@@ -66,11 +66,12 @@ function Notifications() {
               <p>{notification.content}</p>
               <time>{notification.timeDistance}</time>
               {!notification.read && (
-                  <button
-                      onClick={() => handleMarkAsRead(notification._id)}
-                      type="button">
-                    Marcar como lida
-                  </button>
+                <button
+                  onClick={() => handleMarkAsRead(notification._id)}
+                  type="button"
+                >
+                  Marcar como lida
+                </button>
               )}
             </Notification>
           ))}
