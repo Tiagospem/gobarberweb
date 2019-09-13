@@ -23,8 +23,9 @@ function Header() {
             </div>
             <img
               src={
-                profile.avatar.url ||
-                'https://api.adorable.io/avatars/116/abott@adorable.png'
+                profile.avatar
+                  ? profile.avatar.url
+                  : 'https://api.adorable.io/avatars/116/abott@adorable.png'
               }
               alt="Tiago Padilha"
             />
